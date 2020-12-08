@@ -1,26 +1,36 @@
+import os
+import sys
+
 import pygame
 
-n = input()
-if n.isdigit():
-    n = int(n)
-    pygame.init()
-    x, y = 600, 600
-    size = width, height = x, y
-    screen = pygame.display.set_mode(size)
-    screen.fill((200, 200, 150))
-    for i in range(x // n):
-        for k in range(y // n):
-            coor = ((n * k + n // 2, n * i),
-                    (n * k + n, n // 2 + n * i),
-                    (n * k + n // 2, n + n * i),
-                    (n * k, n * i + n // 2))
-            pygame.draw.polygon(screen, (240, 150, 100), coor, width=0)
+
+def load_image(name, colorkey=None):
+    fullname = os.path.join('data', name)
+    if not os.path.isfile(fullname):
+        print(f"Файл с изображением '{fullname}' не найден")
+        sys.exit()
+    image = pygame.image.load(fullname)
+    return image
+
+
+
+pygame.init()
+screen = pygame.display.set_mode((700, 600))
+running = True
+
+all_sprites = pygame.sprite.Group()
+sprite = pygame.sprite.Sprite()
+sprite.image = load_image("cursor.png")
+sprite.rect = sprite.image.get_rect()
+sprite.rect.x, sprite.rect.y = pygame.mouse.get_pos()
+all_sprites.add(sprite)
+pygame.mouse.set_visible(False)
+
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+    sprite.rect.x, sprite.rect.y = pygame.mouse.get_pos()
+    all_sprites.draw(screen)
     pygame.display.flip()
-    run = True
-    while run:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                run = False
-                pygame.quit()
-else:
-    print('Неправильный формат ввода')
+    screen.fill((0, 0, 0))
