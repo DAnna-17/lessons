@@ -4,19 +4,13 @@ import os
 
 class Board:
     # создание поля
-    def __init__(self, width, height):
-        self.width = width
-        self.height = height
-        self.board = [[0] * width for _ in range(height)]
-        # значения по умолчанию
-        self.left = 10
-        self.top = 10
-        self.cell_size = 30
+    def __init__(self, map):
+        self.map = "data\\" + map + '.txt'
 
     def render(self, screen):
         t = {'*' : 'box.png', '#': 'grass.png'}
         all_sprites = pygame.sprite.Group()
-        with open('data\карта.txt') as f:
+        with open(self.map) as f:
             map = f.read().split('\n')
             for i in range(10):
                 for k in range(10):
@@ -60,9 +54,9 @@ def load_image(name, colorkey=None):
     return image
 
 
-
+map = input('Введите название карты без указания типа файла\n')
 pygame.init()
-board = Board(7, 7)
+board = Board(map)
 screen = pygame.display.set_mode((700, 600))
 board.render(screen)
 pygame.display.flip()
@@ -85,9 +79,9 @@ while running:
             x %= 562
             y %= 557
             if x < 62:
-                x= 62
+                x= 512
             if y < 57:
-                y = 57
+                y = 507
             h.go(x, y)
     board.render(screen)
     h.render()
