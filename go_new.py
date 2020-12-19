@@ -8,7 +8,7 @@ class Board:
         self.map = "data\\" + map + '.txt'
 
     def render(self, screen):
-        t = {'*' : 'box.png', '#': 'grass.png'}
+        t = {'#' : 'box.png', '*': 'grass.png'}
         all_sprites = pygame.sprite.Group()
         with open(self.map) as f:
             map = f.read().split('\n')
@@ -76,11 +76,13 @@ while running:
                 y += 50
             elif event.key == pygame.K_UP:
                 y -= 50
-            x %= 562
-            y %= 557
             if x < 62:
-                x= 512
+                x= 62
+            elif x > 512:
+                x = 512
             if y < 57:
+                y = 57
+            elif y > 507:
                 y = 507
             h.go(x, y)
     board.render(screen)
