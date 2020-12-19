@@ -82,6 +82,12 @@ while running:
                 y += 50
             elif event.key == pygame.K_UP:
                 y -= 50
+            x %= 562
+            y %= 557
+            if x < 62:
+                x= 62
+            if y < 57:
+                y = 57
             h.go(x, y)
     board.render(screen)
     h.render()
